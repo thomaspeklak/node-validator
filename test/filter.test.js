@@ -152,6 +152,10 @@ module.exports = {
         assert.equal('<a target="_blank">clickme in firefox</a>', Filter.sanitize('<a target="_blank" href="data:text/html;BASE64youdummy,PHNjcmlwdD5hbGVydCh3aW5kb3cub3BlbmVyLmRvY3VtZW50LmRvY3VtZW50RWxlbWVudC5pbm5lckhUTUwpPC9zY3JpcHQ+">clickme in firefox</a>').xss());
         assert.equal('<a/\'\'\' target="_blank" href=[removed]PHNjcmlwdD5hbGVydChvcGVuZXIuZG9jdW1lbnQuYm9keS5pbm5lckhUTUwpPC9zY3JpcHQ+>firefox11</a>', Filter.sanitize('<a/\'\'\' target="_blank" href=data:text/html;;base64,PHNjcmlwdD5hbGVydChvcGVuZXIuZG9jdW1lbnQuYm9keS5pbm5lckhUTUwpPC9zY3JpcHQ+>firefox11</a>').xss());
 
+        assert.equal('<iframe src="http://test">Test</iframe>', Filter.sanitize('<iframe src="http://test">Test</iframe>').xss(false, ['iframe']));
+        assert.equal('<iframe src="http://test">Text<blink>Text</blink>Text</iframe>', Filter.sanitize('<iframe src="http://test">Text<blink>Text</blink>Text</iframe>').xss(false, ['blink', 'iframe']));
+        assert.equal('<iframe src="http://test">Text&lt;blink&gt;Text&lt;/blink&gt;Text</iframe>', Filter.sanitize('<iframe src="http://test">Text<blink>Text</blink>Text</iframe>').xss(false, ['iframe']));
+
         var url = 'http://www.example.com/test.php?a=b&b=c&c=d';
         assert.equal(url, Filter.sanitize(url).xss());
     },
